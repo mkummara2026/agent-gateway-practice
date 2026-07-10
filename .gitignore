@@ -19,3 +19,4 @@ venv/
 
 # Claude Code local settings (machine-specific, not shared)
 .claude/settings.local.json
+DEPARTMENT_ASSISTANT_PROMPT.md
