@@ -1,0 +1,11 @@
+[
+  {
+    "id": "TCK-1001",
+    "summary": "VPN client fails to connect",
+    "description": "Cisco AnyConnect times out when connecting from home network.",
+    "priority": "medium",
+    "category": "network",
+    "status": "open",
+    "createdAt": "2026-07-01T14:22:00.000Z"
+  }
+]

@@ -1,0 +1,15 @@
+apiVersion: agentgateway.dev/v1alpha1
+kind: AgentgatewayBackend
+metadata:
+  name: payroll-mcp-backend
+  namespace: department-assistant
+spec:
+  mcp:
+    targets:
+      - name: payroll-data
+        static:
+          backendRef:
+            name: payroll-mcp
+          port: 80
+          protocol: StreamableHTTP
+          path: /mcp

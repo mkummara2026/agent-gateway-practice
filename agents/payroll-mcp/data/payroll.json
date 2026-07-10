@@ -1,0 +1,37 @@
+{
+  "payStubs": [
+    {
+      "employeeId": "E-100",
+      "payDate": "2026-06-30",
+      "gross": 5200.0,
+      "net": 3814.62,
+      "deductions": {
+        "federalTax": 780.0,
+        "stateTax": 260.0,
+        "socialSecurity": 322.4,
+        "medicare": 75.4,
+        "retirement401k": 312.0,
+        "healthInsurance": 235.58
+      }
+    },
+    {
+      "employeeId": "E-101",
+      "payDate": "2026-06-30",
+      "gross": 4100.0,
+      "net": 3122.15,
+      "deductions": {
+        "federalTax": 574.0,
+        "stateTax": 205.0,
+        "socialSecurity": 254.2,
+        "medicare": 59.45,
+        "retirement401k": 0,
+        "healthInsurance": 0
+      }
+    }
+  ],
+  "nextPayDate": "2026-07-15",
+  "taxWithholding": {
+    "E-100": { "filingStatus": "single", "federalAllowances": 1, "stateAllowances": 1 },
+    "E-101": { "filingStatus": "married", "federalAllowances": 2, "stateAllowances": 2 }
+  }
+}

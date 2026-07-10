@@ -1,0 +1,14 @@
+apiVersion: agentgateway.dev/v1alpha1
+kind: AgentgatewayBackend
+metadata:
+  name: gemini-llm-backend
+  namespace: department-assistant
+spec:
+  ai:
+    provider:
+      gemini:
+        model: gemini-2.5-flash
+  policies:
+    auth:
+      secretRef:
+        name: gemini-llm-secret

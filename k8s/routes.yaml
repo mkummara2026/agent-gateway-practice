@@ -1,0 +1,117 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: department-assistant-routes
+  namespace: department-assistant
+spec:
+  parentRefs:
+    - name: agentgateway-proxy
+      namespace: agentgateway-system
+      sectionName: http
+  rules:
+    # /hr/*        -> hr-agent's /*        (e.g. /hr/chat -> /chat)
+    # Named so k8s/rate-limit-policy.yaml can target just this rule.
+    - name: hr-chat
+      matches:
+        - path:
+            type: PathPrefix
+            value: /hr
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path:
+              type: ReplacePrefixMatch
+              replacePrefixMatch: /
+      backendRefs:
+        - name: hr-agent
+          port: 80
+
+    # /payroll/*   -> payroll-agent's /*
+    - name: payroll-chat
+      matches:
+        - path:
+            type: PathPrefix
+            value: /payroll
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path:
+              type: ReplacePrefixMatch
+              replacePrefixMatch: /
+      backendRefs:
+        - name: payroll-agent
+          port: 80
+
+    # /it-support/* -> it-support-agent's /*
+    - name: it-support-chat
+      matches:
+        - path:
+            type: PathPrefix
+            value: /it-support
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path:
+              type: ReplacePrefixMatch
+              replacePrefixMatch: /
+      backendRefs:
+        - name: it-support-agent
+          port: 80
+
+    # /mcp/hr, /mcp/payroll, /mcp/it-support -> each service's MCP endpoint,
+    # proxied as an agentgateway mcp-type backend (not a plain Service backend).
+    # Each department's agent reaches its own MCP tool server through these
+    # same routes rather than calling the Service directly.
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /mcp/hr
+      backendRefs:
+        - group: agentgateway.dev
+          kind: AgentgatewayBackend
+          name: hr-mcp-backend
+
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /mcp/payroll
+      backendRefs:
+        - group: agentgateway.dev
+          kind: AgentgatewayBackend
+          name: payroll-mcp-backend
+
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /mcp/it-support
+      backendRefs:
+        - group: agentgateway.dev
+          kind: AgentgatewayBackend
+          name: it-support-mcp-backend
+
+    # /mcp/catalog -> every department's tools merged into one endpoint, for
+    # external discovery only (e.g. Claude Desktop, an MCP inspector). Nothing
+    # in this app calls this route - agents keep using their own /mcp/<dept>.
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /mcp/catalog
+      backendRefs:
+        - group: agentgateway.dev
+          kind: AgentgatewayBackend
+          name: catalog-mcp-backend
+
+    # /llm/gemini -> agentgateway's ai-type backend, proxying to Gemini
+    # directly. Each agent's own LLM calls go through here instead of calling
+    # google-genai/generativelanguage.googleapis.com directly - the real
+    # Gemini API key now lives only in gemini-llm-secret, not in any agent.
+    # No URLRewrite needed: agentgateway rewrites to the right upstream
+    # endpoint internally regardless of the incoming path.
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /llm/gemini
+      backendRefs:
+        - group: agentgateway.dev
+          kind: AgentgatewayBackend
+          name: gemini-llm-backend

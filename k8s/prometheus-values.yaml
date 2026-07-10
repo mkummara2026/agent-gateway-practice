@@ -1,0 +1,16 @@
+# Minimal Prometheus install for scraping agentgateway's own metrics.
+# Not meant for production - single replica, no persistence, no alerting.
+server:
+  persistentVolume:
+    enabled: false
+
+alertmanager:
+  enabled: false
+
+prometheus-pushgateway:
+  enabled: false
+
+extraScrapeConfigs: |
+  - job_name: 'agentgateway-proxy'
+    static_configs:
+      - targets: ['agentgateway-proxy-metrics.agentgateway-system.svc.cluster.local:15020']

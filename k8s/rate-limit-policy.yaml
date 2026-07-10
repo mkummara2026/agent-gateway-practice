@@ -1,0 +1,25 @@
+apiVersion: agentgateway.dev/v1alpha1
+kind: AgentgatewayPolicy
+metadata:
+  name: chat-rate-limit
+  namespace: department-assistant
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: department-assistant-routes
+      sectionName: hr-chat
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: department-assistant-routes
+      sectionName: payroll-chat
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: department-assistant-routes
+      sectionName: it-support-chat
+  traffic:
+    rateLimit:
+      local:
+        - requests: 5
+          unit: Minutes
+          burst: 2

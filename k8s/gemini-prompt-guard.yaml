@@ -1,0 +1,25 @@
+apiVersion: agentgateway.dev/v1alpha1
+kind: AgentgatewayPolicy
+metadata:
+  name: gemini-prompt-guard
+  namespace: department-assistant
+spec:
+  # Targets the ai-type backend directly, so this one policy protects every
+  # department's chat (hr-agent/payroll-agent/it-support-agent all route
+  # their LLM calls through gemini-llm-backend) - no per-agent code needed.
+  targetRefs:
+    - group: agentgateway.dev
+      kind: AgentgatewayBackend
+      name: gemini-llm-backend
+  backend:
+    ai:
+      promptGuard:
+        request:
+          - regex:
+              action: Reject
+              builtins:
+                - Ssn
+                - CreditCard
+            response:
+              message: "Your message appears to contain sensitive personal information (SSN or credit card number) and was blocked before reaching the AI model. Please don't share this kind of information in chat."
+              statusCode: 400

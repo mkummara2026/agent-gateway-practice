@@ -1,0 +1,15 @@
+apiVersion: agentgateway.dev/v1alpha1
+kind: AgentgatewayBackend
+metadata:
+  name: hr-mcp-backend
+  namespace: department-assistant
+spec:
+  mcp:
+    targets:
+      - name: hr-data
+        static:
+          backendRef:
+            name: hr-mcp
+          port: 80
+          protocol: StreamableHTTP
+          path: /mcp

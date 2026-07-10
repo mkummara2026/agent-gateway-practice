@@ -1,0 +1,37 @@
+apiVersion: agentgateway.dev/v1alpha1
+kind: AgentgatewayBackend
+metadata:
+  name: catalog-mcp-backend
+  namespace: department-assistant
+spec:
+  # Aggregates every department's MCP tool server behind one endpoint, purely
+  # for external tool discovery (e.g. connecting Claude Desktop or an MCP
+  # inspector to see the whole company's tool catalog in one place).
+  #
+  # Nothing in this app points at this backend - hr-agent/payroll-agent/
+  # it-support-agent each keep using their own department-scoped
+  # <dept>-mcp-backend so an agent can never see (or call) another
+  # department's tools.
+  mcp:
+    targets:
+      - name: hr
+        static:
+          backendRef:
+            name: hr-mcp
+          port: 80
+          protocol: StreamableHTTP
+          path: /mcp
+      - name: payroll
+        static:
+          backendRef:
+            name: payroll-mcp
+          port: 80
+          protocol: StreamableHTTP
+          path: /mcp
+      - name: it-support
+        static:
+          backendRef:
+            name: it-support-mcp
+          port: 80
+          protocol: StreamableHTTP
+          path: /mcp

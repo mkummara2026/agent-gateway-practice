@@ -1,0 +1,37 @@
+{
+  "employees": [
+    {
+      "employeeId": "E-100",
+      "name": "Alex Rivera",
+      "ptoBalanceDays": 12.5,
+      "benefitsEnrollment": {
+        "medical": "PPO Gold",
+        "dental": "Standard",
+        "vision": "Enrolled",
+        "retirement401k": { "enrolled": true, "contributionPercent": 6 }
+      }
+    },
+    {
+      "employeeId": "E-101",
+      "name": "Jordan Lee",
+      "ptoBalanceDays": 4.0,
+      "benefitsEnrollment": {
+        "medical": "HMO Silver",
+        "dental": "Not enrolled",
+        "vision": "Not enrolled",
+        "retirement401k": { "enrolled": false, "contributionPercent": 0 }
+      }
+    }
+  ],
+  "holidayCalendar": [
+    { "name": "Labor Day", "date": "2026-09-07" },
+    { "name": "Thanksgiving", "date": "2026-11-26" },
+    { "name": "Christmas Day", "date": "2026-12-25" },
+    { "name": "New Year's Day", "date": "2027-01-01" }
+  ],
+  "policies": {
+    "ptoAccrualRate": "1.25 days per month, capped at 24 days",
+    "parentalLeaveWeeks": 12,
+    "remoteWorkPolicy": "Hybrid, minimum 3 days/week in office unless approved fully remote"
+  }
+}
