@@ -107,7 +107,8 @@ spec:
     # Gemini API key now lives only in gemini-llm-secret, not in any agent.
     # No URLRewrite needed: agentgateway rewrites to the right upstream
     # endpoint internally regardless of the incoming path.
-    - matches:
+    - name: llm-gemini
+      matches:
         - path:
             type: PathPrefix
             value: /llm/gemini
